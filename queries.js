@@ -1,4 +1,7 @@
-const pool = require('./db'); 
+const pool = require('./db');
+const inquirer = require('inquirer');
+const queries = require('./queries');
+
 
 module.exports = { 
   // get all departments from the database
