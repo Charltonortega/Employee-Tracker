@@ -103,9 +103,35 @@ async function mainMenu() {
       break;
 
     case "Update Employee Role":
+      const employeeList = await queries.getEmployeeNames();
+      const employeeChoices = employeeList.map((employee) => ({
+        name: employee.name,
+        value: employee.id,
+      }));
+
+      const updateEmployeeRolePrompt = await inquirer.prompt([
+        {
+          name: "employeeId",
+          type: "list", // Use list type to display choices
+          message: "Select an employee to update:",
+          choices: employeeChoices,
+        },
+        {
+          name: "newRoleId",
+          type: "number",
+          message: "Enter the new role ID for the employee:",
+        },
+      ]);
+      const { employeeId, newRoleId } = updateEmployeeRolePrompt;
+
+      // Call the function to update the employee's role in the database
+      await queries.updateEmployeeRole(employeeId, newRoleId);
+      console.log(`Employee's role updated successfully.`);
+
+      // Retrieve and display updated employees
+      const updatedEmployees = await queries.getAllEmployees();
+      console.table("All Employees:", updatedEmployees);
       break;
-    // Add more cases for other choices
   }
 }
-
 mainMenu(); // start the main menu
