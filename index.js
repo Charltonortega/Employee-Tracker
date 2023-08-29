@@ -33,9 +33,21 @@ async function mainMenu() {
         const employees = await queries.getAllEmployees();
         console.log('All Employees:', employees);
         break;
-      case 'Add Department':
-        // Implement logic to prompt user for department name and add to the database
-        break;
+    
+        case 'Add Department':
+            const departmentPrompt = await inquirer.prompt([
+              {
+                name: 'departmentName',
+                type: 'input',
+                message: 'Enter the name of the new department:',
+              },
+            ]);
+            const { departmentName } = departmentPrompt;
+          
+            // Call the function to add the department to the database
+            await queries.addDepartment(departmentName);
+            console.log(`Department "${departmentName}" added successfully.`);
+            break;
       case 'Add Role':
         // Implement logic to prompt user for role details and add to the database
         break;
