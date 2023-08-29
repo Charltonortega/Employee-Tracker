@@ -33,29 +33,50 @@ async function mainMenu() {
         const employees = await queries.getAllEmployees();
         console.log('All Employees:', employees);
         break;
-    
-        case 'Add Department':
-            const departmentPrompt = await inquirer.prompt([
-              {
-                name: 'departmentName',
-                type: 'input',
-                message: 'Enter the name of the new department:',
-              },
-            ]);
-            const { departmentName } = departmentPrompt;
-          
-            // Call the function to add the department to the database
-            await queries.addDepartment(departmentName);
-            console.log(`Department "${departmentName}" added successfully.`);
-            break;
-      case 'Add Role':
-        // Implement logic to prompt user for role details and add to the database
+    case 'Add Department':
+        const departmentPrompt = await inquirer.prompt([
+            {
+            name: 'departmentName',
+            type: 'input',
+            message: 'Enter the name of the new department:',
+            },
+        ]);
+        const { departmentName } = departmentPrompt;
+        
+        // Call the function to add the department to the database
+        await queries.addDepartment(departmentName);
+        console.log(`Department "${departmentName}" added successfully.`);
         break;
+        case 'Add Role':
+                const rolePrompt = await inquirer.prompt([
+                  {
+                    name: 'title',
+                    type: 'input',
+                    message: 'Enter the title of the new role:',
+                  },
+                  {
+                    name: 'salary',
+                    type: 'number',
+                    message: 'Enter the salary for the new role:',
+                  },
+                  {
+                    name: 'departmentId',
+                    type: 'number',
+                    message: 'Enter the department ID for the new role:',
+                  },
+                ]);
+                const { title, salary, departmentId } = rolePrompt;
+              
+                // Call the function to add the role to the database
+                await queries.addRole(title, salary, departmentId);
+                console.log(`Role "${title}" added successfully.`);
+                break;
+                
       case 'Add Employee':
         // Implement logic to prompt user for employee details and add to the database
         break;
       case 'Update Employee Role':
-        // Implement logic to prompt user for employee and new role, and update the database
+        
         break;
       // Add more cases for other choices
     }

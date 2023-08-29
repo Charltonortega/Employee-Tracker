@@ -1,7 +1,7 @@
 {
   "name": "12sql",
   "version": "1.0.0",
-  "description": "<div style=\"text-align:center\">\r   <img src=\"-------------\" alt=\"App Screenshot\" width=\"75%\"/>\r </div>",
+  "description": "Employee Tracker",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
