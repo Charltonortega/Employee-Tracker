@@ -1,5 +1,19 @@
 const inquirer = require("inquirer");
 const queries = require("./queries");
+const logo = require("./logo");
+const consoleTable = require("console.table");
+
+async function displayAndReturnToMainMenu(data, tableName) {
+  console.table(tableName, data);
+  await inquirer.prompt([
+    {
+      name: "return",
+      type: "confirm",
+      message: "Press 'Enter' to continue to main menu",
+    },
+  ]);
+  mainMenu();
+}
 
 async function mainMenu() {
   const choices = [
@@ -23,15 +37,15 @@ async function mainMenu() {
   switch (action) {
     case "View All Departments":
       const departments = await queries.getAllDepartments();
-      console.log("All Departments:", departments);
+      await displayAndReturnToMainMenu(departments, "All Departments");
       break;
     case "View All Roles":
       const roles = await queries.getAllRoles();
-      console.log("All Roles:", roles);
+      await displayAndReturnToMainMenu(roles, "All Roles");
       break;
     case "View All Employees":
       const employees = await queries.getAllEmployees();
-      console.log("All Employees:", employees);
+      await displayAndReturnToMainMenu(employees, "All Employees");
       break;
     case "Add Department":
       const departmentPrompt = await inquirer.prompt([
@@ -46,6 +60,7 @@ async function mainMenu() {
       // Call the function to add the department to the database
       await queries.addDepartment(departmentName);
       console.log(`Department "${departmentName}" added successfully.`);
+      await displayAndReturnToMainMenu([], "All Departments");
       break;
     case "Add Role":
       const rolePrompt = await inquirer.prompt([
@@ -70,6 +85,7 @@ async function mainMenu() {
       // Call the function to add the role to the database
       await queries.addRole(title, salary, departmentId);
       console.log(`Role "${title}" added successfully.`);
+      await displayAndReturnToMainMenu([], "All Roles");
       break;
 
     case "Add Employee":
@@ -100,6 +116,7 @@ async function mainMenu() {
       // Call the function to add the employee to the database
       await queries.addEmployee(firstName, lastName, roleId, managerId);
       console.log(`Employee "${firstName} ${lastName}" added successfully.`);
+      await displayAndReturnToMainMenu([], "All Employees");
       break;
 
     case "Update Employee Role":
@@ -112,7 +129,7 @@ async function mainMenu() {
       const updateEmployeeRolePrompt = await inquirer.prompt([
         {
           name: "employeeId",
-          type: "list", // Use list type to display choices
+          type: "list",
           message: "Select an employee to update:",
           choices: employeeChoices,
         },
@@ -124,14 +141,13 @@ async function mainMenu() {
       ]);
       const { employeeId, newRoleId } = updateEmployeeRolePrompt;
 
-      // Call the function to update the employee's role in the database
       await queries.updateEmployeeRole(employeeId, newRoleId);
       console.log(`Employee's role updated successfully.`);
 
-      // Retrieve and display updated employees
       const updatedEmployees = await queries.getAllEmployees();
-      console.table("All Employees:", updatedEmployees);
+      await displayAndReturnToMainMenu(updatedEmployees, "All Employees");
       break;
   }
 }
-mainMenu(); // start the main menu
+console.log(logo); // Display the logo at the beginning
+mainMenu(); // Start the main menu
