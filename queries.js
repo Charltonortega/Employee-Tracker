@@ -90,9 +90,6 @@ module.exports = {
     }
   },
 
-  // Add the getEmployeeNames function to exports
-  getEmployeeNames,
-
   // delete a department by its ID
   deleteDepartment: async (departmentId) => {
     try {
@@ -111,15 +108,14 @@ module.exports = {
     }
   },
 
-  // DELETE employee b first and last name
-  deleteEmployeeByName: async (firstName, lastName) => {
+  // Delete an employee by their ID
+  deleteEmployee: async (employeeId) => {
     try {
-      await pool.query(
-        "DELETE FROM employee WHERE first_name = ? AND last_name = ?",
-        [firstName, lastName]
-      );
+      await pool.query("DELETE FROM employee WHERE id = ?", [employeeId]);
     } catch (error) {
       throw error;
     }
   },
+
+  getEmployeeNames, // Export the getEmployeeNames function
 };
