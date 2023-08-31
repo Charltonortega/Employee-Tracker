@@ -3,13 +3,14 @@ const queries = require("./queries");
 const logo = require("./logo");
 const consoleTable = require("console.table");
 
+// function to return and display the main menu
 async function displayAndReturnToMainMenu(data, tableName) {
   console.table(tableName, data);
   await inquirer.prompt([
     {
       name: "return",
       type: "confirm",
-      message: "Press 'Enter' to continue to main menu",
+      message: "Press 'Enter' to continue to the main menu",
     },
   ]);
   mainMenu();
@@ -24,6 +25,9 @@ async function mainMenu() {
     "Add Role",
     "Add Employee",
     "Update Employee Role",
+    "Delete Department",
+    "Delete Role",
+    "Delete Employee",
   ];
 
   const { action } = await inquirer.prompt({
@@ -33,7 +37,6 @@ async function mainMenu() {
     choices: choices,
   });
 
-  // Call the appropriate function based on user choice
   switch (action) {
     case "View All Departments":
       const departments = await queries.getAllDepartments();
@@ -57,7 +60,6 @@ async function mainMenu() {
       ]);
       const { departmentName } = departmentPrompt;
 
-      // Call the function to add the department to the database
       await queries.addDepartment(departmentName);
       console.log(`Department "${departmentName}" added successfully.`);
       await displayAndReturnToMainMenu([], "All Departments");
@@ -87,7 +89,6 @@ async function mainMenu() {
       console.log(`Role "${title}" added successfully.`);
       await displayAndReturnToMainMenu([], "All Roles");
       break;
-
     case "Add Employee":
       const employeePrompt = await inquirer.prompt([
         {
@@ -118,7 +119,6 @@ async function mainMenu() {
       console.log(`Employee "${firstName} ${lastName}" added successfully.`);
       await displayAndReturnToMainMenu([], "All Employees");
       break;
-
     case "Update Employee Role":
       const employeeList = await queries.getEmployeeNames();
       const employeeChoices = employeeList.map((employee) => ({
@@ -146,6 +146,98 @@ async function mainMenu() {
 
       const updatedEmployees = await queries.getAllEmployees();
       await displayAndReturnToMainMenu(updatedEmployees, "All Employees");
+      break;
+
+    case "Delete Department":
+      const departmentsToDelete = await queries.getAllDepartments();
+      const departmentChoicesToDelete = departmentsToDelete.map(
+        (department) => ({
+          name: department.name,
+          value: department.id,
+        })
+      );
+
+      const deleteDepartmentPrompt = await inquirer.prompt([
+        {
+          name: "departmentId",
+          type: "list",
+          message: "Select a department to delete:",
+          choices: departmentChoicesToDelete,
+        },
+        {
+          name: "confirm",
+          type: "confirm",
+          message: "Are you sure you want to delete this department?",
+        },
+      ]);
+
+      if (deleteDepartmentPrompt.confirm) {
+        await queries.deleteDepartment(deleteDepartmentPrompt.departmentId);
+        console.log("Department deleted successfully.");
+      } else {
+        console.log("Department deletion cancelled.");
+      }
+      await displayAndReturnToMainMenu([], "All Departments");
+      break;
+
+    case "Delete Role":
+      const rolesToDelete = await queries.getAllRoles();
+      const roleChoicesToDelete = rolesToDelete.map((role) => ({
+        name: role.title,
+        value: role.id,
+      }));
+
+      const deleteRolePrompt = await inquirer.prompt([
+        {
+          name: "roleId",
+          type: "list",
+          message: "Select a role to delete:",
+          choices: roleChoicesToDelete,
+        },
+        {
+          name: "confirm",
+          type: "confirm",
+          message: "Are you sure you want to delete this role?",
+        },
+      ]);
+
+      if (deleteRolePrompt.confirm) {
+        await queries.deleteRole(deleteRolePrompt.roleId);
+        console.log("Role deleted successfully.");
+      } else {
+        console.log("Role deletion cancelled.");
+      }
+      await displayAndReturnToMainMenu([], "All Roles");
+      break;
+
+    case "Delete Employee":
+      const employeesToDelete = await queries.getAllEmployees();
+      const employeeChoicesToDelete = employeesToDelete.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+      }));
+
+      const deleteEmployeePrompt = await inquirer.prompt([
+        {
+          name: "employeeId",
+          type: "list",
+          message: "Select an employee to delete:",
+          choices: employeeChoicesToDelete,
+        },
+        {
+          name: "confirm",
+          type: "confirm",
+          message: "Are you sure you want to delete this employee?",
+        },
+      ]);
+
+      if (deleteEmployeePrompt.confirm) {
+        await queries.deleteEmployee(deleteEmployeePrompt.employeeId);
+        console.log("Employee deleted successfully.");
+      } else {
+        console.log("Employee deletion cancelled.");
+      }
+      await displayAndReturnToMainMenu([], "All Employees");
       break;
   }
 }
