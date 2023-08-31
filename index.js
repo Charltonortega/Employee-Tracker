@@ -18,16 +18,16 @@ async function displayAndReturnToMainMenu(data, tableName) {
 
 async function mainMenu() {
   const choices = [
-    "View All Departments",
-    "View All Roles",
-    "View All Employees",
-    "Add Department",
-    "Add Role",
-    "Add Employee",
-    "Update Employee Role",
-    "Delete Department",
-    "Delete Role",
-    "Delete Employee",
+    "🏢   View All Departments",
+    "💼   View All Roles",
+    "👥   View All Employees",
+    "➕   Add Department",
+    "➕   Add Role",
+    "➕   Add Employee",
+    "🔄   Update Employee Role",
+    "🗑️   Delete Department",
+    "🗑️   Delete Role",
+    "🗑️   Delete Employee",
   ];
 
   const { action } = await inquirer.prompt({
@@ -38,19 +38,19 @@ async function mainMenu() {
   });
 
   switch (action) {
-    case "View All Departments":
+    case "🏢   View All Departments":
       const departments = await queries.getAllDepartments();
       await displayAndReturnToMainMenu(departments, "All Departments");
       break;
-    case "View All Roles":
+    case "💼   View All Roles":
       const roles = await queries.getAllRoles();
       await displayAndReturnToMainMenu(roles, "All Roles");
       break;
-    case "View All Employees":
+    case "👥   View All Employees":
       const employees = await queries.getAllEmployees();
       await displayAndReturnToMainMenu(employees, "All Employees");
       break;
-    case "Add Department":
+    case "➕   Add Department":
       const departmentPrompt = await inquirer.prompt([
         {
           name: "departmentName",
@@ -64,7 +64,7 @@ async function mainMenu() {
       console.log(`Department "${departmentName}" added successfully.`);
       await displayAndReturnToMainMenu([], "All Departments");
       break;
-    case "Add Role":
+    case "➕   Add Role":
       const rolePrompt = await inquirer.prompt([
         {
           name: "title",
@@ -89,7 +89,7 @@ async function mainMenu() {
       console.log(`Role "${title}" added successfully.`);
       await displayAndReturnToMainMenu([], "All Roles");
       break;
-    case "Add Employee":
+    case "➕   Add Employee":
       const employeePrompt = await inquirer.prompt([
         {
           name: "firstName",
@@ -119,7 +119,8 @@ async function mainMenu() {
       console.log(`Employee "${firstName} ${lastName}" added successfully.`);
       await displayAndReturnToMainMenu([], "All Employees");
       break;
-    case "Update Employee Role":
+
+    case "🔄   Update Employee Role":
       const employeeList = await queries.getEmployeeNames();
       const employeeChoices = employeeList.map((employee) => ({
         name: employee.name,
@@ -148,7 +149,7 @@ async function mainMenu() {
       await displayAndReturnToMainMenu(updatedEmployees, "All Employees");
       break;
 
-    case "Delete Department":
+    case "🗑️   Delete Department":
       const departmentsToDelete = await queries.getAllDepartments();
       const departmentChoicesToDelete = departmentsToDelete.map(
         (department) => ({
@@ -180,7 +181,7 @@ async function mainMenu() {
       await displayAndReturnToMainMenu([], "All Departments");
       break;
 
-    case "Delete Role":
+    case "🗑️   Delete Role":
       const rolesToDelete = await queries.getAllRoles();
       const roleChoicesToDelete = rolesToDelete.map((role) => ({
         name: role.title,
@@ -210,7 +211,7 @@ async function mainMenu() {
       await displayAndReturnToMainMenu([], "All Roles");
       break;
 
-    case "Delete Employee":
+    case "🗑️   Delete Employee":
       const employeesToDelete = await queries.getAllEmployees();
       const employeeChoicesToDelete = employeesToDelete.map((employee) => ({
         name: `${employee.first_name} ${employee.last_name}`,
