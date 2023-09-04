@@ -21,7 +21,7 @@
 
 ## 📷 Video Demo
 
-ADD LINK HERE CHARLTON!!!
+- [Link To Video Demo](https://drive.google.com/file/d/1Gx-IdZnvX8APnZqGOEX5hm7oWlj3huys/view?usp=sharing)
 
 - [Github](https://github.com/Charltonortega/Employee-Tracker)
 
