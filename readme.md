@@ -16,7 +16,7 @@
 ## 🚀 Demo GIF
 
 <div align="center">
-  <img src="./assets/screenshots/demo.gif" alt="App Demo GIF" width="50%">
+  <img src="./assets/screenshots/demo.gif" alt="App Demo GIF" width="75%">
 </div>
 
 ## 📷 Video Demo
