@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const queries = require("./queries");
 const logo = require("./logo");
-const consoleTable = require("console.table");
+const consoleTable = require("console.table"); // import all the modules
 
 // function to return and display the main menu
 async function displayAndReturnToMainMenu(data, tableName) {
@@ -15,7 +15,7 @@ async function displayAndReturnToMainMenu(data, tableName) {
   ]);
   mainMenu();
 }
-
+// display the main menu
 async function mainMenu() {
   const choices = [
     "🏢   View All Departments",
@@ -31,6 +31,7 @@ async function mainMenu() {
   ];
 
   const { action } = await inquirer.prompt({
+    // prompt the user for an action
     name: "action",
     type: "list",
     message: "What would you like to do?",
